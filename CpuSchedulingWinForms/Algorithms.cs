@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace CpuSchedulingWinForms
             double[] bp = new double[np];
             double[] wtp = new double[np];
             string[] output1 = new string[npX2];
-            double twt = 0.0, awt; 
+            double twt = 0.0, awt;
             int num;
 
             DialogResult result = MessageBox.Show("First Come First Serve Scheduling ", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
@@ -75,7 +76,7 @@ namespace CpuSchedulingWinForms
             double[] bp = new double[np];
             double[] wtp = new double[np];
             double[] p = new double[np];
-            double twt = 0.0, awt; 
+            double twt = 0.0, awt;
             int x, num;
             double temp = 0.0;
             bool found = false;
@@ -261,9 +262,9 @@ namespace CpuSchedulingWinForms
             double timeQuantum;
             double waitTime = 0, turnaroundTime = 0;
             double averageWaitTime, averageTurnaroundTime;
-            double[] arrivalTime = new double[10];
-            double[] burstTime = new double[10];
-            double[] temp = new double[10];
+            double[] arrivalTime = new double[np];
+            double[] burstTime = new double[np];
+            double[] temp = new double[np];
             int x = np;
 
             DialogResult result = MessageBox.Show("Round Robin Scheduling", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
@@ -318,7 +319,7 @@ namespace CpuSchedulingWinForms
                         MessageBox.Show("Turnaround time for Process " + (i + 1) + " : " + (total - arrivalTime[i]), "Turnaround time for Process " + (i + 1), MessageBoxButtons.OK);
                         MessageBox.Show("Wait time for Process " + (i + 1) + " : " + (total - arrivalTime[i] - burstTime[i]), "Wait time for Process " + (i + 1), MessageBoxButtons.OK);
                         turnaroundTime = (turnaroundTime + total - arrivalTime[i]);
-                        waitTime = (waitTime + total - arrivalTime[i] - burstTime[i]);                        
+                        waitTime = (waitTime + total - arrivalTime[i] - burstTime[i]);
                         counter = 0;
                     }
                     if (i == np - 1)
@@ -340,6 +341,155 @@ namespace CpuSchedulingWinForms
                 MessageBox.Show("Average turnaround time for " + np + " processes: " + averageTurnaroundTime + " sec(s)", "", MessageBoxButtons.OK);
             }
         }
-    }
-}
+        public static void srtfAlgorithm(string userInput)
+        {
+            int np = Convert.ToInt16(userInput);
+            Process[] processList = new Process[np];
+            double[] arrivalTime = new double[np];
+            double[] burstTime = new double[np];
+            double totalTime = 0;
+            double averageWaitTime = 0, averageTurnaroundTime = 0;
+            int remainingProcesses = np;
+
+            DialogResult result = MessageBox.Show("Choose Shortest Remaining Time First Algorithm ?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                for (int i = 0; i < np; i++)
+                {
+                    string arrivalInput = Microsoft.VisualBasic.Interaction.InputBox("Enter arrival time: ", "Arrival time for process " + (i + 1), "", -1, -1);
+                    arrivalTime[i] = Convert.ToInt64(arrivalInput);
+
+                    string burstInput = Microsoft.VisualBasic.Interaction.InputBox("Enter burst time: ", "Burst time for process " + (i + 1), "", -1, -1);
+                    burstTime[i] = Convert.ToInt64(burstInput);
+
+
+                    processList[i] = new Process(arrivalTime[i], burstTime[i], i + 1);
+
+                }
+                while (remainingProcesses != 0) {
+                    int shortest = 10000;
+                    for (int j = 0; j < processList.Length; j++)
+                    {
+                        if (processList[j].getArrivalTime() <= totalTime && processList[j].getRemainingTime() > 0 && (shortest == 10000 || processList[j].getRemainingTime() < processList[shortest].getRemainingTime())) {
+                            shortest = j;
+                        }
+                    }
+                    if (shortest != 10000)
+                    {
+                        processList[shortest].decreaseRemainingTime();
+                        totalTime++;
+                        if (processList[shortest].getRemainingTime() == 0)
+                        {
+                            processList[shortest].processComplete(totalTime);
+                            remainingProcesses--;
+                        }
+                    }
+                    else
+                    {
+                        totalTime++;
+                    }
+                }
+                for (int j = 0; j < processList.Length; j++)
+                {
+                    MessageBox.Show("Waiting time for Process " + (j + 1) + " : " + processList[j].getWaitingTime(), "Waiting time for Process " + (j + 1), MessageBoxButtons.OK);
+                    MessageBox.Show("Turnaround time for Process " + (j + 1) + " : " + processList[j].getTurnaroundTime(), "Turnaround time for Process " + (j + 1), MessageBoxButtons.OK);
+                    averageWaitTime += processList[j].getWaitingTime();
+                    averageTurnaroundTime += processList[j].getTurnaroundTime();
+                }
+                averageWaitTime = Convert.ToInt64(averageWaitTime * 1.0 / np);
+                averageTurnaroundTime = Convert.ToInt64(averageTurnaroundTime * 1.0 / np);
+
+                MessageBox.Show("Average wait time for " + np + " processes: " + averageWaitTime + " sec(s)", "", MessageBoxButtons.OK);
+                MessageBox.Show("Average turnaround time for " + np + " processes: " + averageTurnaroundTime + " sec(s)", "", MessageBoxButtons.OK);
+                MessageBox.Show("Throughput of scheduler: " + (np / totalTime) + " processes per second ", "", MessageBoxButtons.OK);
+            }
+        }
+        public static void hrrnAlgorithm(string userInput)
+        {
+            int np = Convert.ToInt16(userInput);
+            Process[] processList = new Process[np];
+            double[] arrivalTime = new double[np];
+            double[] burstTime = new double[np];
+            double totalTime = 0, averageWaitTime = 0, averageTurnaroundTime = 0;
+            int remainingProcesses = np;
+            DialogResult result = MessageBox.Show("Choose Highest Response Ratio Next Algorithm ?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                for (int i = 0; i < np; i++) {
+                    string arrivalInput = Microsoft.VisualBasic.Interaction.InputBox("Enter arrival time: ", "Arrival time for process " + (i + 1), "", -1, -1);
+                    string burstInput = Microsoft.VisualBasic.Interaction.InputBox("Enter burst time: ", "Burst time for process " + (i + 1), "", -1, -1);
+
+                    arrivalTime[i] = Convert.ToInt64(arrivalInput);
+                    burstTime[i] = Convert.ToInt64(burstInput);
+                    processList[i] = new Process(arrivalTime[i], burstTime[i], i + 1);
+                }
+                while (remainingProcesses != 0)
+                {
+                    int highestResponseNumber = 0;
+                    double highestResponse = 0;
+                    for (int j = 0; j < processList.Length; j++)
+                    {
+                        if (processList[j].getArrivalTime() < totalTime && processList[j].getRemainingTime() > 0)
+                        {
+                            double responseRatio = (totalTime - processList[j].getArrivalTime());
+                            if (responseRatio > highestResponse)
+                            {
+                                highestResponse = responseRatio;
+                                highestResponseNumber = j;
+                            }
+
+                        }
+                    }
+
+                            totalTime += processList[highestResponseNumber].getRemainingTime();
+                            processList[highestResponseNumber].setRemainingTime(0);
+                            processList[highestResponseNumber].processComplete(totalTime);
+                            remainingProcesses--;
+                       
+ 
+                    }
+                    for (int j = 0; j < processList.Length; j++)
+                    {
+                        MessageBox.Show("Waiting time for Process " + (j + 1) + " : " + processList[j].getWaitingTime(), "Waiting time for Process " + (j + 1), MessageBoxButtons.OK);
+                        MessageBox.Show("Turnaround time for Process " + (j + 1) + " : " + processList[j].getTurnaroundTime(), "Turnaround time for Process " + (j + 1), MessageBoxButtons.OK);
+                        averageWaitTime += processList[j].getWaitingTime();
+                        averageTurnaroundTime += processList[j].getTurnaroundTime();
+                    }
+                    averageWaitTime = Convert.ToInt64(averageWaitTime * 1.0 / np);
+                    averageTurnaroundTime = Convert.ToInt64(averageTurnaroundTime * 1.0 / np);
+
+                    MessageBox.Show("Average wait time for " + np + " processes: " + averageWaitTime + " sec(s)", "", MessageBoxButtons.OK);
+                    MessageBox.Show("Average turnaround time for " + np + " processes: " + averageTurnaroundTime + " sec(s)", "", MessageBoxButtons.OK);
+                    MessageBox.Show("Throughput of scheduler: " + (np/totalTime) + " processes per second ", "", MessageBoxButtons.OK);
+            }
+
+            }
+        }
+        public class Process
+        {
+            int processID; public double arrivalTime, burstTime, remainingTime, waitingTime, turnaroundTime, completionTime;
+            public Process(double arrivalTime, double burstTime, int process)
+            {
+                this.processID = process;
+                this.arrivalTime = arrivalTime;
+                this.burstTime = burstTime;
+                this.remainingTime = burstTime;
+            }
+            public double getArrivalTime() { return this.arrivalTime; }
+            public double getRemainingTime() { return this.remainingTime; }
+            public double getCompletionTime() { return this.completionTime; }
+            public double getTurnaroundTime() { return this.turnaroundTime; }
+            public double getWaitingTime() { return this.waitingTime; }
+            public void decreaseRemainingTime() { this.remainingTime--; }
+            public void setRemainingTime(double completedTime) { this.remainingTime = completedTime; }
+            public double getResponseRatio(double totalTime) { double responseRatio = (totalTime / this.arrivalTime); return responseRatio; }
+            public void processComplete(double totalTime) {
+                this.completionTime = totalTime;
+                this.turnaroundTime = (totalTime - arrivalTime);
+                this.waitingTime = (turnaroundTime - burstTime);
+            }
+        }
+    } 
 

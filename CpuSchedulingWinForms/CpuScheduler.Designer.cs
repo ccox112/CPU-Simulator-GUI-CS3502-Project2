@@ -49,6 +49,7 @@
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.cpuSchedulerTab = new System.Windows.Forms.TabPage();
+            this.btnSRTF = new System.Windows.Forms.Button();
             this.btnRoundRobin = new System.Windows.Forms.Button();
             this.restartApp = new System.Windows.Forms.Label();
             this.btnPriority = new System.Windows.Forms.Button();
@@ -63,6 +64,7 @@
             this.pictureBoxCodeOutput = new System.Windows.Forms.PictureBox();
             this.btnBarcode = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnHRRN = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabSelection.SuspendLayout();
@@ -313,6 +315,8 @@
             this.cpuSchedulerTab.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.cpuSchedulerTab.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cpuSchedulerTab.BackgroundImage")));
             this.cpuSchedulerTab.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.cpuSchedulerTab.Controls.Add(this.btnHRRN);
+            this.cpuSchedulerTab.Controls.Add(this.btnSRTF);
             this.cpuSchedulerTab.Controls.Add(this.btnRoundRobin);
             this.cpuSchedulerTab.Controls.Add(this.restartApp);
             this.cpuSchedulerTab.Controls.Add(this.btnPriority);
@@ -327,6 +331,17 @@
             this.cpuSchedulerTab.Size = new System.Drawing.Size(501, 413);
             this.cpuSchedulerTab.TabIndex = 1;
             this.cpuSchedulerTab.Text = "CPU Scheduler";
+            // 
+            // btnSRTF
+            // 
+            this.btnSRTF.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.btnSRTF.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSRTF.Location = new System.Drawing.Point(16, 343);
+            this.btnSRTF.Name = "btnSRTF";
+            this.btnSRTF.Size = new System.Drawing.Size(84, 46);
+            this.btnSRTF.TabIndex = 13;
+            this.btnSRTF.Text = "SRTF";
+            this.btnSRTF.UseVisualStyleBackColor = false;
             // 
             // btnRoundRobin
             // 
@@ -521,6 +536,17 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // btnHRRN
+            // 
+            this.btnHRRN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.btnHRRN.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnHRRN.Location = new System.Drawing.Point(115, 343);
+            this.btnHRRN.Name = "btnHRRN";
+            this.btnHRRN.Size = new System.Drawing.Size(117, 46);
+            this.btnHRRN.TabIndex = 14;
+            this.btnHRRN.Text = "HRRN";
+            this.btnHRRN.UseVisualStyleBackColor = false;
+            // 
             // CpuScheduler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -550,10 +576,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCodeOutput)).EndInit();
             this.ResumeLayout(false);
 
+            this.btnSRTF.Click += new System.EventHandler(this.btnSRTF_Click);
+            this.btnHRRN.Click += new System.EventHandler(this.btnHRRN_Click);
         }
 
         #endregion
-
+        
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnCpuScheduler;
         private System.Windows.Forms.Button btnDashBoard;
@@ -587,5 +615,7 @@
         private System.Windows.Forms.Button btnRoundRobin;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnSRTF;
+        private System.Windows.Forms.Button btnHRRN;
     }
 }
