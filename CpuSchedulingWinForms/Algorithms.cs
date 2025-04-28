@@ -433,7 +433,7 @@ namespace CpuSchedulingWinForms
                     {
                         if (processList[j].getArrivalTime() < totalTime && processList[j].getRemainingTime() > 0)
                         {
-                            double responseRatio = (totalTime - processList[j].getArrivalTime());
+                            double responseRatio = ((processList[j].getWaitingTime() + processList[j].getBurstTime()) / processList[j].getBurstTime());
                             if (responseRatio > highestResponse)
                             {
                                 highestResponse = responseRatio;
@@ -487,9 +487,9 @@ namespace CpuSchedulingWinForms
             public double getCompletionTime() { return this.completionTime; }
             public double getTurnaroundTime() { return this.turnaroundTime; }
             public double getWaitingTime() { return this.waitingTime; }
+            public double getBurstTime() { return this.burstTime; }
             public void decreaseRemainingTime() { this.remainingTime--; }
             public void setRemainingTime(double completedTime) { this.remainingTime = completedTime; }
-            public double getResponseRatio(double totalTime) { double responseRatio = (totalTime / this.arrivalTime); return responseRatio; }
             public void processComplete(double totalTime) {
                 this.completionTime = totalTime;
                 this.turnaroundTime = (totalTime - arrivalTime);
