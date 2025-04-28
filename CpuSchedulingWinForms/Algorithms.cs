@@ -12,6 +12,7 @@ namespace CpuSchedulingWinForms
     {
         public static void fcfsAlgorithm(string userInput)
         {
+            var rand=new Random();
             int np = Convert.ToInt16(userInput);
             int npX2 = np * 2;
 
@@ -30,13 +31,10 @@ namespace CpuSchedulingWinForms
                     //MessageBox.Show("Enter Burst time for P" + (num + 1) + ":", "Burst time for Process", MessageBoxButtons.OK, MessageBoxIcon.Question);
                     //Console.WriteLine("\nEnter Burst time for P" + (num + 1) + ":");
 
-                    string input =
-                    Microsoft.VisualBasic.Interaction.InputBox("Enter Burst time: ",
-                                                       "Burst time for P" + (num + 1),
-                                                       "",
-                                                       -1, -1);
+                    string input = Microsoft.VisualBasic.Interaction.InputBox("Enter Burst time: ", "Burst time for P" + (num + 1), "",  -1, -1);
 
                     bp[num] = Convert.ToInt64(input);
+                    //bp[num] = rand.Next(3, 20);
 
                     //var input = Console.ReadLine();
                     //bp[num] = Convert.ToInt32(input);
@@ -71,6 +69,7 @@ namespace CpuSchedulingWinForms
 
         public static void sjfAlgorithm(string userInput)
         {
+            var rand = new Random();
             int np = Convert.ToInt16(userInput);
 
             double[] bp = new double[np];
@@ -87,13 +86,10 @@ namespace CpuSchedulingWinForms
             {
                 for (num = 0; num <= np - 1; num++)
                 {
-                    string input =
-                        Microsoft.VisualBasic.Interaction.InputBox("Enter burst time: ",
-                                                           "Burst time for P" + (num + 1),
-                                                           "",
-                                                           -1, -1);
+                    string input = Microsoft.VisualBasic.Interaction.InputBox("Enter burst time: ","Burst time for P" + (num + 1), "", -1, -1);
 
                     bp[num] = Convert.ToInt64(input);
+                    //bp[num] = rand.Next(3, 20);
                 }
                 for (num = 0; num <= np - 1; num++)
                 {
@@ -154,6 +150,7 @@ namespace CpuSchedulingWinForms
 
         public static void priorityAlgorithm(string userInput)
         {
+            var rand = new Random();
             int np = Convert.ToInt16(userInput);
 
             DialogResult result = MessageBox.Show("Priority Scheduling ", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
@@ -171,13 +168,10 @@ namespace CpuSchedulingWinForms
                 bool found = false;
                 for (num = 0; num <= np - 1; num++)
                 {
-                    string input =
-                        Microsoft.VisualBasic.Interaction.InputBox("Enter burst time: ",
-                                                           "Burst time for P" + (num + 1),
-                                                           "",
-                                                           -1, -1);
+                    string input = Microsoft.VisualBasic.Interaction.InputBox("Enter burst time: ","Burst time for P" + (num + 1),"",-1, -1);
 
                     bp[num] = Convert.ToInt64(input);
+                    //bp[num] = rand.Next(3, 20);
                 }
                 for (num = 0; num <= np - 1; num++)
                 {
@@ -256,6 +250,7 @@ namespace CpuSchedulingWinForms
 
         public static void roundRobinAlgorithm(string userInput)
         {
+            var rand = new Random();
             int np = Convert.ToInt16(userInput);
             int i, counter = 0;
             double total = 0.0;
@@ -273,21 +268,15 @@ namespace CpuSchedulingWinForms
             {
                 for (i = 0; i < np; i++)
                 {
-                    string arrivalInput =
-                            Microsoft.VisualBasic.Interaction.InputBox("Enter arrival time: ",
-                                                               "Arrival time for P" + (i + 1),
-                                                               "",
-                                                               -1, -1);
+                    string arrivalInput =  Microsoft.VisualBasic.Interaction.InputBox("Enter arrival time: ","Arrival time for P" + (i + 1),"", -1, -1);
 
                     arrivalTime[i] = Convert.ToInt64(arrivalInput);
+                    //arrivalTime[i] = rand.Next(0, 10);
 
-                    string burstInput =
-                            Microsoft.VisualBasic.Interaction.InputBox("Enter burst time: ",
-                                                               "Burst time for P" + (i + 1),
-                                                               "",
-                                                               -1, -1);
+                    string burstInput = Microsoft.VisualBasic.Interaction.InputBox("Enter burst time: ", "Burst time for P" + (i + 1), "",  -1, -1);
 
                     burstTime[i] = Convert.ToInt64(burstInput);
+                    //burstTime[i] = rand.Next(3, 20);
 
                     temp[i] = burstTime[i];
                 }
@@ -339,10 +328,12 @@ namespace CpuSchedulingWinForms
                 averageTurnaroundTime = Convert.ToInt64(turnaroundTime * 1.0 / np);
                 MessageBox.Show("Average wait time for " + np + " processes: " + averageWaitTime + " sec(s)", "", MessageBoxButtons.OK);
                 MessageBox.Show("Average turnaround time for " + np + " processes: " + averageTurnaroundTime + " sec(s)", "", MessageBoxButtons.OK);
+                MessageBox.Show("Throughput of scheduler: " + (np / total) + " processes per second ", "", MessageBoxButtons.OK);
             }
         }
         public static void srtfAlgorithm(string userInput)
         {
+            var rand = new Random();
             int np = Convert.ToInt16(userInput);
             Process[] processList = new Process[np];
             double[] arrivalTime = new double[np];
@@ -357,12 +348,14 @@ namespace CpuSchedulingWinForms
             {
                 for (int i = 0; i < np; i++)
                 {
+                    
                     string arrivalInput = Microsoft.VisualBasic.Interaction.InputBox("Enter arrival time: ", "Arrival time for process " + (i + 1), "", -1, -1);
                     arrivalTime[i] = Convert.ToInt64(arrivalInput);
+                    //arrivalTime[i] = rand.Next(0, 10);
 
                     string burstInput = Microsoft.VisualBasic.Interaction.InputBox("Enter burst time: ", "Burst time for process " + (i + 1), "", -1, -1);
                     burstTime[i] = Convert.ToInt64(burstInput);
-
+                    //burstTime[i] = rand.Next(3, 20);
 
                     processList[i] = new Process(arrivalTime[i], burstTime[i], i + 1);
 
@@ -392,6 +385,10 @@ namespace CpuSchedulingWinForms
                 }
                 for (int j = 0; j < processList.Length; j++)
                 {
+                    if (processList[j].getWaitingTime() < 0)
+                    {
+                        processList[j].setArrivalTime(0);
+                    }
                     MessageBox.Show("Waiting time for Process " + (j + 1) + " : " + processList[j].getWaitingTime(), "Waiting time for Process " + (j + 1), MessageBoxButtons.OK);
                     MessageBox.Show("Turnaround time for Process " + (j + 1) + " : " + processList[j].getTurnaroundTime(), "Turnaround time for Process " + (j + 1), MessageBoxButtons.OK);
                     averageWaitTime += processList[j].getWaitingTime();
@@ -407,6 +404,7 @@ namespace CpuSchedulingWinForms
         }
         public static void hrrnAlgorithm(string userInput)
         {
+            var rand = new Random();
             int np = Convert.ToInt16(userInput);
             Process[] processList = new Process[np];
             double[] arrivalTime = new double[np];
@@ -422,7 +420,9 @@ namespace CpuSchedulingWinForms
                     string burstInput = Microsoft.VisualBasic.Interaction.InputBox("Enter burst time: ", "Burst time for process " + (i + 1), "", -1, -1);
 
                     arrivalTime[i] = Convert.ToInt64(arrivalInput);
+                    //arrivalTime[i] = rand.Next(0, 10);
                     burstTime[i] = Convert.ToInt64(burstInput);
+                    //burstTime[i] = rand.Next(3, 20);
                     processList[i] = new Process(arrivalTime[i], burstTime[i], i + 1);
                 }
                 while (remainingProcesses != 0)
@@ -452,6 +452,10 @@ namespace CpuSchedulingWinForms
                     }
                     for (int j = 0; j < processList.Length; j++)
                     {
+                    if (processList[j].getWaitingTime() < 0)
+                    {
+                        processList[j].setArrivalTime(0);
+                    }
                         MessageBox.Show("Waiting time for Process " + (j + 1) + " : " + processList[j].getWaitingTime(), "Waiting time for Process " + (j + 1), MessageBoxButtons.OK);
                         MessageBox.Show("Turnaround time for Process " + (j + 1) + " : " + processList[j].getTurnaroundTime(), "Turnaround time for Process " + (j + 1), MessageBoxButtons.OK);
                         averageWaitTime += processList[j].getWaitingTime();
@@ -478,6 +482,7 @@ namespace CpuSchedulingWinForms
                 this.remainingTime = burstTime;
             }
             public double getArrivalTime() { return this.arrivalTime; }
+            public void setArrivalTime(int change) { this.arrivalTime = change; }
             public double getRemainingTime() { return this.remainingTime; }
             public double getCompletionTime() { return this.completionTime; }
             public double getTurnaroundTime() { return this.turnaroundTime; }
